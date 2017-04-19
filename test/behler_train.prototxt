@@ -1,0 +1,113 @@
+name: "BehlerNet"
+layer 
+{
+  name: "Data"
+  type: "BehlerData"
+  top: "data"
+  top: "label"
+  behler_data_param 
+  {
+    # data_source: "D:\\research\\nnpl\\behler_cpp\\test\\test-features.dat"
+	# label_source: "D:\\research\\nnpl\\behler_cpp\\test\\test-labels.dat"
+	# batch_size: 20
+	# num_data_rows: 30
+	# num_data_cols: 26
+	# num_label_rows: 3
+	# num_label_cols: 2
+    data_source: "D:\\research\\nnpl\\data\\0-features.dat"
+    label_source: "D:\\research\\nnpl\\data\\0-labels.dat"
+    batch_size: 5000
+	num_data_rows: 17340
+	num_data_cols: 26
+	num_label_rows: 1326
+	num_label_cols: 2
+  }
+  
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "data"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 100
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 100
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "ip2"
+  top: "ip2"
+}
+
+layer {
+  name: "ip3"
+  type: "InnerProduct"
+  bottom: "ip2"
+  top: "ip3"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+
+
+layer {
+  name: "loss"
+  type: "BehlerEuclideanLoss"
+  bottom: "ip3"
+  bottom: "label"
+}

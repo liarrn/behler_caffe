@@ -1,0 +1,12 @@
+name: "behler_test_net" 
+layer {
+    name: "behler_data_layer"
+    type: "Python"
+    top: "feature"
+    top: "label"
+    python_param {
+        module: "behler_data_layer"
+        layer: "BehlerDataLayer"
+        param_str: "{'feature_path': './features.txt', 'label_path': './features.txt', 'batch_size': 2}"
+    }
+}
